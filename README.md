@@ -2,7 +2,9 @@
 
 **Summary.** A board told Relay, a fictional $600M activewear brand, to put AI everywhere. The brand's edge was its community, and the roles most exposed to AI were the ones holding that community together. I worked out where AI should act and where people must stay in charge, and built a demo of the core fix: every warning gets one named owner and a clock, AI can flag and draft, and a person decides.
 
-[How to run](#how-to-run) · [Decisions and what I turned down](DECISIONS.md)
+[Live demo](https://lorisca-analytics.github.io/relay-ai-transformation/) · [How to run](#how-to-run) · [Decisions and what I turned down](DECISIONS.md)
+
+![The stock alarm tab: December replayed, with the first warning marked and the 11 days vs 2 hours comparison](docs/demo.png)
 
 ## Problem
 
