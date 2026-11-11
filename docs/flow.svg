@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" role="img" aria-labelledby="t d">
+  <title id="t">How a warning moves</title>
+  <desc id="d">A signal opens one alert with one owner. The owner has a clock to answer and a clock to act. If either runs out, the alert moves to the next person. Past the top it is marked stuck. Only an action closes it.</desc>
+  <style>
+    text { font: 14px -apple-system, "Segoe UI", Roboto, Arial, sans-serif; fill: #1e2d42; }
+    .s { font-size: 12px; fill: #4a6a8f; }
+    .box { fill: #f2f5f9; stroke: #d6dfe9; }
+    .go { fill: #e3f4eb; stroke: #17734a; }
+    .bad { fill: #fdecea; stroke: #b42318; }
+    .ln { stroke: #4a6a8f; stroke-width: 1.5; fill: none; marker-end: url(#a); }
+  </style>
+  <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1 9 5 1 9" fill="none" stroke="#4a6a8f" stroke-width="1.5"/></marker></defs>
+  <rect class="box" x="20" y="40" width="150" height="60" rx="10"/>
+  <text x="95" y="66" text-anchor="middle">Signal</text>
+  <text x="95" y="86" text-anchor="middle" class="s">spike or low stock</text>
+  <rect class="box" x="220" y="40" width="160" height="60" rx="10"/>
+  <text x="300" y="66" text-anchor="middle">One alert, one owner</text>
+  <text x="300" y="86" text-anchor="middle" class="s">duplicates do nothing</text>
+  <rect class="box" x="430" y="40" width="150" height="60" rx="10"/>
+  <text x="505" y="66" text-anchor="middle">Answer clock</text>
+  <text x="505" y="86" text-anchor="middle" class="s">then the act clock</text>
+  <rect class="go" x="620" y="40" width="120" height="60" rx="10"/>
+  <text x="680" y="66" text-anchor="middle">Closed</text>
+  <text x="680" y="86" text-anchor="middle" class="s">only by an action</text>
+  <path class="ln" d="M170 70H216"/>
+  <path class="ln" d="M380 70H426"/>
+  <path class="ln" d="M580 70H616"/>
+  <rect class="box" x="430" y="170" width="150" height="60" rx="10"/>
+  <text x="505" y="196" text-anchor="middle">Next person</text>
+  <text x="505" y="216" text-anchor="middle" class="s">clock restarts</text>
+  <rect class="bad" x="220" y="170" width="160" height="60" rx="10"/>
+  <text x="300" y="196" text-anchor="middle">Stuck</text>
+  <text x="300" y="216" text-anchor="middle" class="s">past the top, stays visible</text>
+  <path class="ln" d="M505 100V166"/>
+  <text x="515" y="140" class="s">clock runs out</text>
+  <path class="ln" d="M470 170 C450 130 460 110 480 104"/>
+  <path class="ln" d="M430 200H384"/>
+  <text x="20" y="280" class="s">Made-up example. Owners: inventory lead, then head of data and operations, then CFO.</text>
+</svg>

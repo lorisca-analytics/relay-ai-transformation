@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relay reflex</title>
+<meta name="description" content="A working demo: every warning sign gets one owner and a clock, AI drafts but people decide. Made-up data.">
+<script>
+  try { const t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=3">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15L6 16Z M10 20a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+  <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M3 16 16 3l5 5L8 21l-5-5Z M7 12l2 2 M10 9l2 2 M13 6l2 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><path d="M3 6h18v12H3z M3 7l9 6 9-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 4v16 M5 20h14 M4 8h16 M7 8l-3 6a3 3 0 0 0 6 0L7 8Z M17 8l-3 6a3 3 0 0 0 6 0l-3-6Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5 10 17l9-10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3 2 20h20L12 3Z M12 10v4 M12 17.2v.1" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5Z" fill="currentColor"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="shell top-row">
+    <div>
+      <h1>Relay reflex</h1>
+      <p>Every warning sign gets one named owner and a clock. AI can flag and draft, and a person decides. All data here is made up.</p>
+    </div>
+    <div class="top-actions">
+      <button class="primary" id="replay" type="button"><svg class="icon"><use href="#i-play"/></svg> Replay December</button>
+      <button class="theme-btn" id="theme" type="button" aria-label="Switch light or dark"><svg class="icon"><use href="#i-moon"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main class="shell app">
+  <div class="tabs" role="tablist" aria-label="Parts of the tool" aria-orientation="vertical">
+    <button class="tab" role="tab" id="tab-alarm" aria-controls="alarm" aria-selected="true"><svg class="icon" aria-hidden="true"><use href="#i-bell"/></svg>Stock alarm</button>
+    <button class="tab" role="tab" id="tab-sizing" aria-controls="sizing" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-ruler"/></svg>Sizing check</button>
+    <button class="tab" role="tab" id="tab-message" aria-controls="message" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>Message check</button>
+    <button class="tab" role="tab" id="tab-value" aria-controls="value" aria-selected="false" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#i-scale"/></svg>Customer value</button>
+  </div>
+
+  <div>
+    <!-- Stock alarm -->
+    <section class="panel" role="tabpanel" id="alarm" aria-labelledby="tab-alarm" tabindex="0">
+      <div class="panel-head">
+        <h2>A warning reaches a person in hours, not days</h2>
+        <div class="facts">
+          <span><b>Owner:</b> inventory lead, then head of data and operations, then CFO</span>
+          <span><b>Guard-rail:</b> saying "seen" doesn't close an alert, only an action does</span>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>One product line through December</h3>
+        <div class="chart-wrap" id="dec-chart" aria-live="polite"></div>
+        <div class="legend">
+          <span><i class="key" style="background:var(--accent)"></i>Daily demand</span>
+          <span><i class="key" style="background:var(--bad)"></i>Demand with no stock to ship</span>
+          <span><i class="key" style="background:var(--ink);height:2px;vertical-align:.2em"></i>Stock on hand</span>
+          <span><i class="key" style="background:var(--warn);height:2px;vertical-align:.2em"></i>First warning</span>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>From first warning to action</h3>
+        <div class="lanes" id="lanes"></div>
+        <p class="small muted" style="margin-top:.8rem">Old path: the 11 days between demand turning and the reorder in the case. Owner path: this replay.</p>
+      </div>
+
+      <div class="grid">
+        <div class="block">
+          <h3>Play out the owner's response</h3>
+          <fieldset>
+            <legend class="small">What the owner does</legend>
+            <div class="seg" id="response">
+              <label><input type="radio" name="response" value="acts" checked> Answers, then acts</label>
+              <label><input type="radio" name="response" value="acks"> Says "seen", does nothing</label>
+              <label><input type="radio" name="response" value="silent"> Doesn't answer</label>
+            </div>
+          </fieldset>
+          <div class="field" style="margin-top:1rem">
+            <label for="hours">Hours each step takes</label>
+            <select id="hours"><option value="1" selected>1 hour</option><option value="3">3 hours</option><option value="5">5 hours</option></select>
+          </div>
+        </div>
+        <div class="block" id="alert-card" aria-live="polite"></div>
+      </div>
+
+      <div class="block">
+        <h3>What happened, in order</h3>
+        <table class="log"><tbody id="log"></tbody></table>
+      </div>
+    </section>
+
+    <!-- Sizing -->
+    <section class="panel" role="tabpanel" id="sizing" aria-labelledby="tab-sizing" tabindex="0" hidden>
+      <div class="panel-head">
+        <h2>Bigger sizes come back more often, and that has an owner</h2>
+        <div class="facts">
+          <span><b>Owner:</b> data lead and merchandising lead</span>
+          <span><b>Rule:</b> a gap over 5 points pauses the fit tool for review</span>
+          <span><b>Guard-rail:</b> the gap doesn't count as fixed if extended sizes go out of stock</span>
+        </div>
+      </div>
+      <div class="block">
+        <div class="alert-top"><h3>Return rate by size</h3><span id="gap-chip"></span></div>
+        <div class="chart-wrap" id="size-chart"></div>
+        <p id="gap-text" class="small muted" style="margin-top:.6rem"></p>
+      </div>
+      <div class="block">
+        <h3>Fit helper</h3>
+        <p class="small muted" style="margin-bottom:1rem">What a support agent sees. It suggests, the agent decides, and off-chart cases go to a person.</p>
+        <div class="fields">
+          <div class="field"><label for="chest">Chest (in)</label><input id="chest" type="number" inputmode="decimal" min="20" max="70" value="40"></div>
+          <div class="field"><label for="waist">Waist (in)</label><input id="waist" type="number" inputmode="decimal" min="18" max="70" value="33"></div>
+          <div class="field"><label for="hips">Hips (in)</label><input id="hips" type="number" inputmode="decimal" min="20" max="75" value="43"></div>
+        </div>
+        <div class="field" style="margin-top:.75rem"><label for="cut">Cut</label><select id="cut"></select></div>
+        <div class="result" id="fit-result" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Message check -->
+    <section class="panel" role="tabpanel" id="message" aria-labelledby="tab-message" tabindex="0" hidden>
+      <div class="panel-head">
+        <h2>AI drafts, a person sends, and nothing goes out in someone else's voice</h2>
+        <div class="facts">
+          <span><b>Owner:</b> the person on shift, with community review</span>
+          <span><b>How it checks:</b> plain rules, not AI. A person still reads every message.</span>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="block">
+          <h3>Draft</h3>
+          <div class="row" id="samples" style="margin-bottom:.75rem"></div>
+          <label for="msg" class="small muted">Message</label>
+          <textarea id="msg"></textarea>
+          <div style="display:grid;gap:.55rem;margin-top:.9rem">
+            <label class="check"><input type="checkbox" id="ai" checked> Drafted with AI</label>
+            <label class="check"><input type="checkbox" id="disclosed"> Says it was drafted with AI</label>
+            <label class="check"><input type="checkbox" id="voice"> Written in a real person's voice</label>
+            <div class="field"><label for="approver">Approved by (name or role)</label><input id="approver" type="text" autocomplete="off" placeholder="Leave empty if nobody has read it"></div>
+          </div>
+        </div>
+        <div class="block">
+          <h3>Send check</h3>
+          <ul class="rules" id="rules" aria-live="polite"></ul>
+          <div class="row" style="margin-top:1.1rem">
+            <button class="primary" id="send" type="button">Send</button>
+            <span id="send-note" class="small muted"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Customer value -->
+    <section class="panel" role="tabpanel" id="value" aria-labelledby="tab-value" tabindex="0" hidden>
+      <div class="panel-head">
+        <h2>Cheap channels get expensive once returns count</h2>
+        <div class="facts">
+          <span><b>Owner:</b> CFO</span>
+          <span><b>Decision:</b> move spend away from channels under 3.0x and protect community referral</span>
+          <span><b>Guard-rail:</b> read it next to channel size, so shrinking a channel can't fake a better ratio</span>
+        </div>
+      </div>
+      <div class="block">
+        <h3>Customer value for every dollar spent to win them</h3>
+        <div class="chart-wrap" id="value-chart"></div>
+        <div class="legend">
+          <span><i class="key" style="background:var(--mist-deep)"></i>Before returns</span>
+          <span><i class="key" style="background:var(--accent)"></i>With returns counted</span>
+          <span><i class="key" style="background:var(--ink);height:2px;vertical-align:.2em"></i>3.0x target</span>
+        </div>
+      </div>
+      <div class="block">
+        <div class="field">
+          <label for="retcost">Assumption: cost of handling returns, per customer who returns something <b id="retcost-val"></b></label>
+          <input id="retcost" type="range" min="0" max="150" step="5" value="60">
+        </div>
+        <p id="value-text" class="small muted" style="margin-top:.6rem"></p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="shell">Made-up data, shaped like a business case. Rebuilt from an earlier prototype, keeping its four parts. The README explains how it works.</div>
+</footer>
+
+<script src="src/csv.js"></script>
+<script src="src/routes.js"></script>
+<script src="src/reflex.js"></script>
+<script src="src/replay.js"></script>
+<script src="src/sizing.js"></script>
+<script src="src/messages.js"></script>
+<script src="src/value.js"></script>
+<script src="app.js?v=2"></script>
+</body>
+</html>

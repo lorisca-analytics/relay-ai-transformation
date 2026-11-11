@@ -1,0 +1,13 @@
+{
+  "name": "relay-ai-transformation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A signal-to-owner reflex and AI send gate for a fictional activewear brand. Synthetic data.",
+  "scripts": {
+    "test": "node --test",
+    "data": "node scripts/make-data.js",
+    "serve": "python3 -m http.server 8000"
+  },
+  "author": "Lorisca Tuuk",
+  "license": "MIT"
+}
