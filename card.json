@@ -9,7 +9,7 @@
   "trace": {
     "problem": "A warning sat 11 days with no owner",
     "move": "One owner and two clocks per signal, AI drafts and people decide",
-    "result": "A working demo plus a strategy built around the exposed roles"
+    "result": "A tested demo and a plan for which work AI takes"
   },
   "cardVisual": {
     "kind": "bars",
